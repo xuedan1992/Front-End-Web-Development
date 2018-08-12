@@ -1,4 +1,4 @@
-//1、JS输入手机号码加空格
+//1、JS输入手机号码加空格,input的id="mobile"
 function Mobile2(){
 	var obj = document.getElementById('mobile')
 	var value = obj.value;
