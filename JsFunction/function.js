@@ -570,4 +570,97 @@ function postorder(root,res){
 	res.push(root);
 }
 
+//***********************************************************************************
+//30、'123456789876543212345678987654321...'的第n位是什么？
+function getNum(n){
+	var flag = true;
+	var num = 0;
+	for (var i = 0; i < n; i++) {
+		if (num == 1) flag = true;
+		if (num == 9) flag = false;
+		flag ? num++ : num --;
+	};
+	return num;
+}
+var n = getNum(18);
+console.log(n);
+//***********************************************************************************
+//31、打点计时器(第一个数立马输出，后面的数每隔1S输出)
+//setInterval（按照指定的周期来调用函数或计算表达式）实现
+function count(start, end) {
+    console.log(start);
+    var timer = setInterval(function () {
+        if (start < end) {
+        	start++
+            console.log(start)
+        } else {
+            clearInterval(timer)
+        }
+    }, 1000);
+}
+//setTimeout（在指定的毫秒数后调用函数或计算表达式）实现
+function count(start, end) {
+     var cha = end-start;
+     var clcId;
+     for(let i = 0;i<=cha;i++){
+        setTimeout(function(){
+            console.log(i+cha)
+        },i*1000)
+     }
+}
+count(5,10)
+//***********************************************************************************
+//32、时间戳转换为时间
+//时间戳是指格林威治时间1970年01月01日00时00分00秒(北京时间1970年01月01日08时00分00秒)起至现在的总秒数。
+//注意：如果是Unix时间戳记得乘以1000。比如：PHP函数time()获得的时间戳就要乘以1000。
+function timestampToTime(timestamp) {
+    var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+    Y = date.getFullYear() + '-';
+    M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+    D = date.getDate() + ' ';
+    h = date.getHours() + ':';
+    m = date.getMinutes() + ':';
+    s = date.getSeconds();
+    return Y+M+D+h+m+s;
+}
+console.log(timestampToTime(1534262400));//2018-08-15 16:43:26
+//将日期格式转换成时间戳：
+var date = new Date('2014-04-23 18:55:49:123');
+// 有三种方式获取
+var time1 = date.getTime();
+var time2 = date.valueOf();
+var time3 = Date.parse(date);
+console.log(time1);//1398250549123
+console.log(time2);//1398250549123
+console.log(time3);//1398250549000
+//以上三种获取方式的区别：
+//第一、第二种：会精确到毫秒,第三种：只能精确到秒，毫秒用000替代
+//注意：获取到的时间戳除以1000就可获得Unix时间戳，就可传值给后台得到。
+//***********************************************************************************
+//33、实现add(1)(2)(3)(4)(5)...
 
+/*首先要一个数记住每次的计算值，所以使用了闭包，在tmp中记住了x的值，第一次调用add(),初始化了tmp，并将x保存在tmp的作用链中，然后返回tmp保证了第二次调用的是tmp函数，后面的计算都是在调用tmp, 因为tmp也是返回的自己，保证了第二次之后的调用也是调用tmp，而在tmp中将传入的参数与保存在作用链中x相加并付给sum，这样就保证了计算；
+但是在计算完成后还是返回了tmp这个函数，这样就获取不到计算的结果了，我们需要的结果是一个计算的数字那么怎么办呢，首先要知道JavaScript中，打印和相加计算，会分别调用toString或valueOf函数，所以我们重写tmp的toString和valueOf方法，返回sum的值；*/
+
+function add (x) {
+	var sum = x;
+	var tmp = function (y) {
+		sum = sum + y;
+		return tmp;
+	};
+	tmp.toString = tmp.valueOf = function () {
+		return sum;
+	};
+	return tmp;
+}
+console.log(add(1)(2)(3)); //6
+console.log(add(1)(2)(3)(4)); //10
+//当后面传入的参数个数确定的情况下，也可以：
+function add (a){
+	return function(b){
+		return function(c){
+			return a+b+c;
+		}
+	}
+}
+console.log(add(1)(2)(3))
